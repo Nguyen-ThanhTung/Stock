@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 from getdata import load_stock_data
 
+# Load dữ liệu
 features, target = load_stock_data()
 
 # Chia dữ liệu thành 70% train và 30% còn lại
@@ -20,7 +21,7 @@ X_train_scaled = scaler.transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 X_val_scaled = scaler.transform(X_val)
 
-    # Define a set of configurations to test
+# Các tham số để thử nghiệm
 activation_functions = ['relu', 'tanh', 'logistic']
 hidden_layer_sizes = [(50, 50), (100, 50), (100, 100)]
 solvers = ['adam', 'sgd']
@@ -29,7 +30,7 @@ best_model = None
 best_mse = float('inf')
 best_params = {}
 
-    # Iterate over configurations
+# Vòng lặp tìm kiếm mô hình tốt nhất
 for activation in activation_functions:
     for hidden_layers in hidden_layer_sizes:
         for solver in solvers:
@@ -56,7 +57,7 @@ for activation in activation_functions:
 
                 print(f"Validation MSE: {mse}, MAE: {mae}, R2: {r2}")
 
-                    # Track the best model based on MSE
+                # Track the best model based on MSE
                 if mse < best_mse:
                     best_mse = mse
                     best_model = mlp
@@ -67,20 +68,19 @@ for activation in activation_functions:
                         'max_iter': max_iter
                     }
 
-    # Evaluate the best model on the test set
+# Đánh giá mô hình tốt nhất trên tập test
 y_test_pred = best_model.predict(X_test_scaled)
 test_mse = mean_squared_error(y_test, y_test_pred)
 test_mae = mean_absolute_error(y_test, y_test_pred)
 test_r2 = r2_score(y_test, y_test_pred)
 
 print(f"Best Model Test MSE: {test_mse}, MAE: {test_mae}, R2: {test_r2}")
-# Print the best hyperparameters
 print(f"Best Hyperparameters: {best_params}")
 
-# Dự đoán cho các tập dữ liệu
-y_train_pred = mlp.predict(X_train_scaled)
-y_val_pred = mlp.predict(X_val_scaled)
-y_test_pred = mlp.predict(X_test_scaled)
+# Dự đoán cho các tập dữ liệu với mô hình tốt nhất
+y_train_pred = best_model.predict(X_train_scaled)
+y_val_pred = best_model.predict(X_val_scaled)
+y_test_pred = best_model.predict(X_test_scaled)
 
 # Các chỉ số đánh giá
 print("Chỉ số đánh giá trên tập train:")

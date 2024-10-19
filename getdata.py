@@ -52,7 +52,7 @@ def load_stock_data():
     return features, target
 
 # Gọi hàm để kiểm tra
-# features, target = load_stock_data()
+features, target = load_stock_data()
 
 
 
