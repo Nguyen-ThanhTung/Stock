@@ -203,8 +203,8 @@ def train_stacking_model():
     X_test_scaled = scaler.transform(X_test)
 
     # Define base models
-    mlp = MLPRegressor(hidden_layer_sizes=(100, 100), random_state=1, max_iter=3000)
-    ridge = RidgeCV(alphas=[0.01, 0.1, 1, 10, 100])
+    mlp = MLPRegressor(hidden_layer_sizes=(100, 100), activation='relu', solver='adam', max_iter=4000, random_state=42)
+    ridge = RidgeCV(alphas=[0.0001, 0.001 , 0.01, 0.1, 1, 10, 100])
     linreg = LinearRegression()
 
     # Define stacking model
